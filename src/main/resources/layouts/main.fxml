@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXRadioButton?>
-<?import com.jfoenix.controls.JFXTextArea?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<?import com.jfoenix.controls.JFXTextField?>
-<GridPane alignment="center" hgap="10" prefHeight="490.0" prefWidth="1073.0" vgap="10" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.mainController">
+<GridPane alignment="center" hgap="10" prefHeight="490.0" prefWidth="1073.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.mainController">
     <columnConstraints>
         <ColumnConstraints />
     </columnConstraints>
@@ -23,12 +17,12 @@
             <children>
                 <Pane layoutX="-7.0" prefHeight="125.0" prefWidth="1073.0" style="-fx-background-color: rgba(128, 128, 128, 0.48);">
                     <children>
-                        <ImageView fx:id="windImage" fitHeight="78.0" fitWidth="150.0" layoutX="313.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="windImage" fitHeight="78.0" fitWidth="215.0" layoutX="313.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
                         <Label fx:id="statusRest" layoutX="580.0" layoutY="18.0" prefHeight="78.0" prefWidth="102.0" text="statusRest" />
-                        <Pane layoutX="827.0" layoutY="-2.0" prefHeight="125.0" prefWidth="246.0" style="-fx-border-color: black; -fx-border-style: none; -fx-border-width: 2px;">
+                        <Pane layoutX="839.0" layoutY="-3.0" prefHeight="128.0" prefWidth="240.0" style="-fx-border-color: black; -fx-border-style: none; -fx-border-width: 2px;">
                             <children>
-                                <JFXTextField fx:id="numTries" layoutX="21.0" layoutY="16.0" prefHeight="36.0" prefWidth="102.0" />
-                                <JFXTextField fx:id="playerName" layoutX="21.0" layoutY="63.0" prefHeight="36.0" prefWidth="102.0" />
+                                <JFXTextField fx:id="numTries" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="16.0" prefHeight="36.0" prefWidth="102.0" promptText="Počet pokusov" />
+                                <JFXTextField fx:id="playerName" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="63.0" prefHeight="36.0" prefWidth="102.0" promptText="Meno" />
                                 <JFXButton fx:id="btnStart" layoutX="155.0" layoutY="31.0" text="Štart" />
                                 <JFXButton fx:id="btnScore" layoutX="155.0" layoutY="79.0" text="Skóre" />
                             </children></Pane>
