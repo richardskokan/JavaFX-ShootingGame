@@ -37,6 +37,9 @@ public class Target {
         innerTarget.setStrokeWidth(2);
 
         outerTarget.setFill(new Color(1, 1, 1, 1));
+
+        innerTarget.setDisable(true);
+        outerTarget.setDisable(true);
     }
 
     public void resetTarget() {
@@ -45,5 +48,8 @@ public class Target {
         innerTarget.setStrokeWidth(2);
 
         outerTarget.setFill(new Color(0.275, 0.275, 0.275, 1));
+
+        innerTarget.setDisable(false);
+        outerTarget.setDisable(false);
     }
 }

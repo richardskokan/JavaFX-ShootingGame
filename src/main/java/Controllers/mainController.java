@@ -1,13 +1,16 @@
 package Controllers;
 
 import Objects.Target;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +21,13 @@ public class mainController implements Initializable {
     ToggleGroup inputWind = new ToggleGroup();
     ToggleGroup inputComfort = new ToggleGroup();
 
+    public ImageView windImage;
+    public Label statusRest;
+    public JFXTextField numTries;
+    public JFXTextField playerName;
+    public JFXButton btnStart;
+    public JFXButton btnScore;
+
     public Pane gamePane;
     Target target0 = new Target(137, 183);
     Target target1 = new Target(337, 183);
@@ -27,7 +37,6 @@ public class mainController implements Initializable {
     Target [] targets = {target0, target1, target2, target3, target4};
 
     boolean running = false;
-    int POSITION = 0;
     int WIND = 0;
     int REST = 0;
     int windOffset = 0;
@@ -73,6 +82,7 @@ public class mainController implements Initializable {
     public void start(ActionEvent actionEvent) {
         resetTargets();
 
+        //Disabling/Enabling outer targets depending on "player position"
         if (inputPosition.getSelectedToggle() == posStand) {
             for (int i = 0; i < 5; i++) {
                 targets [i].getOuterTarget().setDisable(false);
@@ -82,6 +92,8 @@ public class mainController implements Initializable {
                 targets [i].getOuterTarget().setDisable(true);
             }
         }
+
+
     }
 
     void resetTargets() {
