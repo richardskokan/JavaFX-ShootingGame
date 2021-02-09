@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
 <GridPane alignment="center" hgap="10" prefHeight="490.0" prefWidth="1073.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.mainController">
     <columnConstraints>
@@ -15,11 +16,11 @@
     <children>
         <Pane prefHeight="490.0" prefWidth="1057.0">
             <children>
-                <Pane layoutX="-7.0" prefHeight="125.0" prefWidth="1073.0" style="-fx-background-color: rgba(128, 128, 128, 0.48);">
+                <Pane layoutX="-15.0" layoutY="-5.0" prefHeight="122.0" prefWidth="1091.0" style="-fx-background-color: rgba(128, 128, 128, 0.48); -fx-border-color: black; -fx-border-width: 2px;">
                     <children>
                         <ImageView fx:id="windImage" fitHeight="78.0" fitWidth="215.0" layoutX="313.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
                         <Label fx:id="statusRest" layoutX="580.0" layoutY="18.0" prefHeight="78.0" prefWidth="102.0" text="statusRest" />
-                        <Pane layoutX="839.0" layoutY="-3.0" prefHeight="128.0" prefWidth="240.0" style="-fx-border-color: black; -fx-border-style: none; -fx-border-width: 2px;">
+                        <Pane layoutX="839.0" layoutY="-3.0" prefHeight="125.0" prefWidth="250.0" style="-fx-border-color: black; -fx-border-style: none; -fx-border-width: 2px;">
                             <children>
                                 <JFXTextField fx:id="numTries" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="16.0" prefHeight="36.0" prefWidth="102.0" promptText="Počet pokusov" />
                                 <JFXTextField fx:id="playerName" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="63.0" prefHeight="36.0" prefWidth="102.0" promptText="Meno" />
@@ -35,6 +36,20 @@
                         <JFXRadioButton fx:id="heavyBreathing" layoutX="718.0" layoutY="71.0" text="Zadýchaný" />
                     </children>
                 </Pane>
+            <AnchorPane layoutX="-7.0" layoutY="125.0" prefHeight="365.0" prefWidth="1073.0">
+               <children>
+                  <Circle fx:id="targetOuter0" fill="#464646" layoutX="137.0" layoutY="183.0" radius="80.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="57.0" AnchorPane.rightAnchor="856.0" AnchorPane.topAnchor="103.0" />
+                  <Circle fx:id="targetOuter1" fill="#464646" layoutX="337.0" layoutY="183.0" radius="80.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="656.0" AnchorPane.topAnchor="103.0" />
+                  <Circle fx:id="targetOuter2" fill="#464646" layoutX="537.0" layoutY="183.0" radius="80.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="457.0" AnchorPane.rightAnchor="456.0" AnchorPane.topAnchor="103.0" />
+                  <Circle fx:id="targetOuter3" fill="#464646" layoutX="737.0" layoutY="183.0" radius="80.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="657.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="103.0" />
+                  <Circle fx:id="targetOuter4" fill="#464646" layoutX="937.0" layoutY="183.0" radius="80.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="857.0" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="103.0" />
+                  <Circle fx:id="targetInner0" fill="#363636" layoutX="137.0" layoutY="183.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="896.0" AnchorPane.topAnchor="143.0" />
+                  <Circle fx:id="targetInner1" fill="#363636" layoutX="337.0" layoutY="183.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="297.0" AnchorPane.rightAnchor="696.0" AnchorPane.topAnchor="143.0" />
+                  <Circle fx:id="targetInner2" fill="#363636" layoutX="537.0" layoutY="183.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="497.0" AnchorPane.rightAnchor="496.0" AnchorPane.topAnchor="143.0" />
+                  <Circle fx:id="targetInner3" fill="#363636" layoutX="737.0" layoutY="183.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="697.0" AnchorPane.rightAnchor="296.0" AnchorPane.topAnchor="143.0" />
+                  <Circle fx:id="targetInner4" fill="#363636" layoutX="937.0" layoutY="183.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="897.0" AnchorPane.rightAnchor="96.0" AnchorPane.topAnchor="143.0" />
+               </children>
+            </AnchorPane>
             </children>
         </Pane>
     </children>
