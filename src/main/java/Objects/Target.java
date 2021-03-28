@@ -7,6 +7,8 @@ public class Target {
     Circle innerTarget = new Circle(40);
     Circle outerTarget = new Circle(80);
 
+    boolean shot = false;
+
     public Target(double x, double y) {
         innerTarget.setFill(new Color(0.212, 0.212, 0.212, 1));
         innerTarget.setStroke(new Color(0, 0, 0, 1));
@@ -40,6 +42,8 @@ public class Target {
 
         innerTarget.setDisable(true);
         outerTarget.setDisable(true);
+
+        shot = true;
     }
 
     public void resetTarget() {
@@ -51,5 +55,11 @@ public class Target {
 
         innerTarget.setDisable(false);
         outerTarget.setDisable(false);
+
+        shot = false;
+    }
+
+    public boolean isShot() {
+        return shot;
     }
 }

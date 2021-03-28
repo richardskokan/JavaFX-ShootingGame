@@ -5,39 +5,32 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10" prefHeight="490.0" prefWidth="1073.0" vgap="10"
-          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="Controllers.mainController">
+<GridPane alignment="center" hgap="10" prefHeight="490.0" prefWidth="1073.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
     <columnConstraints>
-        <ColumnConstraints/>
+        <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints/>
+        <RowConstraints />
     </rowConstraints>
     <Pane prefHeight="490.0" prefWidth="1057.0">
-        <Pane layoutX="-15.0" layoutY="-5.0" prefHeight="122.0" prefWidth="1091.0"
-              style="-fx-background-color: rgba(128, 128, 128, 0.48); -fx-border-color: black; -fx-border-width: 2px;">
-            <ImageView fx:id="windImage" fitHeight="78.0" fitWidth="215.0" layoutX="313.0" layoutY="18.0"
-                       pickOnBounds="true" preserveRatio="true"/>
-            <Label fx:id="statusRest" layoutX="580.0" layoutY="18.0" prefHeight="78.0" prefWidth="102.0"
-                   text="statusRest"/>
-            <Pane layoutX="839.0" layoutY="-3.0" prefHeight="125.0" prefWidth="250.0"
-                  style="-fx-border-color: black; -fx-border-style: none; -fx-border-width: 2px;">
-                <JFXTextField fx:id="numTries" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="16.0"
-                              prefHeight="36.0" prefWidth="102.0" promptText="Počet pokusov"/>
-                <JFXTextField fx:id="playerName" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="63.0"
-                              prefHeight="36.0" prefWidth="102.0" promptText="Meno"/>
-                <JFXButton fx:id="btnStart" layoutX="155.0" layoutY="31.0" onAction="#start" text="Štart"/>
-                <JFXButton fx:id="btnScore" layoutX="155.0" layoutY="79.0" text="Skóre"/>
+        <Pane layoutX="-15.0" layoutY="-5.0" prefHeight="122.0" prefWidth="1091.0" style="-fx-background-color: rgba(128, 128, 128, 0.48); -fx-border-color: black; -fx-border-width: 2px;">
+            <ImageView fx:id="windImage" fitHeight="78.0" fitWidth="215.0" layoutX="313.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="bulletCounter" layoutX="578.0" layoutY="70.0" prefHeight="36.0" prefWidth="102.0" text="Počet nábojov" />
+            <Label fx:id="statusRest" layoutX="580.0" layoutY="18.0" prefHeight="51.0" prefWidth="102.0" text="Unavenosť" />
+            <Pane layoutX="839.0" layoutY="-3.0" prefHeight="125.0" prefWidth="250.0" style="-fx-border-color: black; -fx-border-style: none; -fx-border-width: 2px;">
+                <JFXTextField fx:id="numTries" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="16.0" prefHeight="36.0" prefWidth="102.0" promptText="Počet pokusov" />
+                <JFXTextField fx:id="playerName" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="63.0" prefHeight="36.0" prefWidth="102.0" promptText="Meno" />
+                <JFXButton fx:id="btnStart" layoutX="155.0" layoutY="31.0" onAction="#start" text="Štart" />
+                <JFXButton fx:id="btnScore" layoutX="155.0" layoutY="79.0" text="Skóre" />
             </Pane>
-            <JFXRadioButton fx:id="posStand" layoutX="24.0" layoutY="17.0" text="V stoji"/>
-            <JFXRadioButton fx:id="posProne" layoutX="24.0" layoutY="48.0" text="Na bruchu"/>
-            <JFXRadioButton fx:id="windNone" layoutX="142.0" layoutY="17.0" text="Bezvetrie"/>
-            <JFXRadioButton fx:id="windLight" layoutX="142.0" layoutY="48.0" text="Slabý vietor"/>
-            <JFXRadioButton fx:id="windStrong" layoutX="142.0" layoutY="79.0" text="Silný vietor"/>
-            <JFXRadioButton fx:id="rested" layoutX="718.0" layoutY="40.0" text="Odpočinutý"/>
-            <JFXRadioButton fx:id="heavyBreathing" layoutX="718.0" layoutY="71.0" text="Zadýchaný"/>
+            <JFXRadioButton fx:id="posStand" layoutX="24.0" layoutY="17.0" text="V stoji" />
+            <JFXRadioButton fx:id="posProne" layoutX="24.0" layoutY="48.0" text="Na bruchu" />
+            <JFXRadioButton fx:id="windNone" layoutX="142.0" layoutY="17.0" text="Bezvetrie" />
+            <JFXRadioButton fx:id="windLight" layoutX="142.0" layoutY="48.0" text="Slabý vietor" />
+            <JFXRadioButton fx:id="windStrong" layoutX="142.0" layoutY="79.0" text="Silný vietor" />
+            <JFXRadioButton fx:id="rested" layoutX="718.0" layoutY="40.0" text="Odpočinutý" />
+            <JFXRadioButton fx:id="heavyBreathing" layoutX="718.0" layoutY="71.0" text="Zadýchaný" />
         </Pane>
-        <Pane fx:id="gamePane" layoutX="-8.0" layoutY="117.0" prefHeight="365.0" prefWidth="1074.0"/>
+        <Pane fx:id="gamePane" layoutX="-8.0" layoutY="117.0" prefHeight="365.0" prefWidth="1074.0" />
     </Pane>
 </GridPane>

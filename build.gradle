@@ -13,3 +13,7 @@ repositories {
 dependencies {
     compile group: 'com.jfoenix', name: 'jfoenix', version: '9.0.1'
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
