@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -21,7 +22,10 @@
                 <JFXTextField fx:id="numTries" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="16.0" prefHeight="36.0" prefWidth="102.0" promptText="Počet pokusov" />
                 <JFXTextField fx:id="playerName" alignment="BOTTOM_LEFT" layoutX="21.0" layoutY="63.0" prefHeight="36.0" prefWidth="102.0" promptText="Meno" />
                 <JFXButton fx:id="btnStart" layoutX="155.0" layoutY="31.0" onAction="#start" text="Štart" />
-                <JFXButton fx:id="btnScore" layoutX="155.0" layoutY="79.0" text="Skóre" />
+                <JFXButton fx:id="btnScore" layoutX="155.0" layoutY="79.0" text="Skóre">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></JFXButton>
             </Pane>
             <JFXRadioButton fx:id="posStand" layoutX="24.0" layoutY="17.0" text="V stoji" />
             <JFXRadioButton fx:id="posProne" layoutX="24.0" layoutY="48.0" text="Na bruchu" />

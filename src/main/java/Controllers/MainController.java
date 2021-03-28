@@ -12,13 +12,18 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -42,7 +47,10 @@ public class MainController implements Initializable {
     Target target3 = new Target(737, 183);
     Target target4 = new Target(937, 183);
     Target [] targets = {target0, target1, target2, target3, target4};
+    ArrayList<Circle> hitmarks = new ArrayList<>();
 
+    WindSimulator windSimulator;
+    FatigueSimulator fatigueSimulator;
     Timeline uiChange = new Timeline();
 
     boolean running = false;
@@ -54,7 +62,7 @@ public class MainController implements Initializable {
     int windOffset = 0;
     int restOffsetX = 0;
     int restOffsetY = 0;
-    int gravityOffset = -10;
+    int gravityOffset = 0; //WAS -10 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,25 +79,46 @@ public class MainController implements Initializable {
         gamePane.getChildren().addAll(target3.getOuterTarget(), target3.getInnerTarget());
         gamePane.getChildren().addAll(target4.getOuterTarget(), target4.getInnerTarget());
 
+        //Sets custom cursor (sniper sights)
+        Image sniperSights = new Image("img/sights.png");
+        ImageCursor sights = new ImageCursor(sniperSights, 480, 480);
+        gamePane.getParent().setCursor(sights);
+
         //Setting onclick-checkers
         for (int i = 0; i < 5; i++) {
             int finalI = i;
             targets [i].getInnerTarget().setOnMouseClicked(event -> {
                 Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
-                if (targets [finalI].getInnerTarget().contains(shotLocation) && running) {
+
+                //Checks if target was hit
+                if (targets [finalI].getInnerTarget().contains(shotLocation) && !targets [finalI].isShot() && running) {
                     targets [finalI].targetHit();
                 }
             });
 
             targets [i].getOuterTarget().setOnMouseClicked(event -> {
                 Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
-                if (targets [finalI].getOuterTarget().contains(shotLocation) && running) {
+
+                //Checks if target was hit
+                if (targets [finalI].getOuterTarget().contains(shotLocation) && !targets [finalI].isShot() && running) {
                     targets [finalI].targetHit();
                 }
             });
 
         }
-        gamePane.setOnMouseClicked(event -> remainingShots--);
+        gamePane.setOnMouseClicked(event -> {
+            if (running) {
+                remainingShots--;
+                Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
+
+                //Adds hitmarker
+                Circle hitmarker = new Circle(0.5, Color.GREEN);
+                hitmarker.setCenterX(shotLocation.getX());
+                hitmarker.setCenterY(shotLocation.getY());
+                hitmarks.add(hitmarker);
+                gamePane.getChildren().addAll(hitmarks.get(hitmarks.size() - 1));
+            }
+        });
 
         //Checking for name and number of tries emptiness
         playerName.setOnKeyTyped(event -> {
@@ -104,7 +133,7 @@ public class MainController implements Initializable {
     }
 
     public void start(ActionEvent actionEvent) {
-        //Get values of settings and disables changes to them; allows click listeners
+        //Gets values of settings and disables changes to them; allows click listeners
         if (inputWind.getSelectedToggle() == windNone) WIND = 0;
         else if (inputWind.getSelectedToggle() == windLight) WIND = 1;
         else if (inputWind.getSelectedToggle() == windStrong) WIND = 2;
@@ -121,18 +150,18 @@ public class MainController implements Initializable {
         running = true;
 
         //Creates an instance of WindSimulator and starts it to simulate wind
-        WindSimulator windSimulator = new WindSimulator(WIND);
+        windSimulator = new WindSimulator(WIND);
         windSimulator.start();
 
         //Creates an instance of FatigueSimulator and starts it to simulate fatigue
-        FatigueSimulator fatigueSimulator = new FatigueSimulator(REST);
+        fatigueSimulator = new FatigueSimulator(REST);
         fatigueSimulator.start();
 
         //Value updates & UI updates of wind direction & strength and fatigue level; checks if player is finished (out of shots/hit all targets)
         uiChange = new Timeline(new KeyFrame(Duration.millis(100), event -> {
             //Updates labels in UI
             bulletCounter.setText(remainingShots +"/" +numShots);
-            statusRest.setText(String.valueOf(fatigueSimulator.getFatigueLevel()));
+            statusRest.setText(String.valueOf(windOffset));
 
             //Updates values for wind offset
             windOffset = windSimulator.getWindX();
@@ -161,6 +190,15 @@ public class MainController implements Initializable {
         }
     }
 
+    //Stops all threads and UI updates on window closure if the game is still running
+    public void stop() {
+        //Stops other threads and UI refreshes
+        windSimulator.stop();
+        fatigueSimulator.stop();
+        uiChange.stop();
+    }
+
+    //Write name, score and difficulty settings into a text file (TODO)
     private void writeScore() {
     }
 
@@ -171,8 +209,14 @@ public class MainController implements Initializable {
         fatigueSimulator.stop();
         uiChange.stop();
 
+        //Stops click listeners
+        running = false;
+
+        //Removes hitmarkers
+        gamePane.getChildren().removeAll(hitmarks);
+
         //Makes settings available
-        numTries.setDisable(false); playerName.setDisable(false); btnStart.setDisable(false); btnScore.setDisable(false); posStand.setDisable(false); posProne.setDisable(false);
+        numTries.setDisable(false); playerName.setDisable(false); btnStart.setDisable(true); btnScore.setDisable(false); posStand.setDisable(false); posProne.setDisable(false);
             windNone.setDisable(false); windLight.setDisable(false); windStrong.setDisable(false); rested.setDisable(false); heavyBreathing.setDisable(false);
         playerName.setText("");
         numTries.setText("");
