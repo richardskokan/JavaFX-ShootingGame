@@ -71,11 +71,9 @@ public class Target {
 
     public boolean wasHit(double x, double y, int position) {
         if (position == 0) {
-            if (Point2D.distance(this.x, this.y, x, y) < innerTarget.getRadius() + innerTarget.getStrokeWidth()) return true;
-            else return false;
+            return Point2D.distance(this.x, this.y, x, y) < innerTarget.getRadius() + innerTarget.getStrokeWidth();
         } else {
-            if (Point2D.distance(this.x, this.y, x, y) < outerTarget.getRadius() + outerTarget.getStrokeWidth()) return true;
-            else return false;
+            return Point2D.distance(this.x, this.y, x, y) < outerTarget.getRadius() + outerTarget.getStrokeWidth();
         }
     }
 }

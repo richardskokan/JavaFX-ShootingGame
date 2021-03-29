@@ -3,9 +3,8 @@ package Threads;
 import java.util.Random;
 
 public class WindSimulator extends Thread {
-    private final int WIND_LIMIT = 40;
 
-    private Integer windStrength;
+    private final Integer windStrength;
     private double windX;
 
     public WindSimulator(Integer windStrength) {
@@ -19,6 +18,7 @@ public class WindSimulator extends Thread {
         if (windStrength == null || windStrength == 0) return;
 
         Random windGenerator = new Random();
+        int WIND_LIMIT = 40;
         windX = windGenerator.nextInt(WIND_LIMIT) + WIND_LIMIT * (windStrength - 1);
         if (windGenerator.nextBoolean()) windX *= -1;
 

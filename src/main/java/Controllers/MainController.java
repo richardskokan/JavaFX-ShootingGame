@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -114,29 +113,19 @@ public class MainController implements Initializable {
 
                 //Checks if target was hit
                 for (int i = 0; i < 5; i++) {
-                    if (POSITION == 0) {
-                        if (targets [i].wasHit(shotLocation.getX(), shotLocation.getY(), POSITION)) targets [i].targetHit();
-                    } else {
-                        if (targets [i].wasHit(shotLocation.getX(), shotLocation.getY(), POSITION)) targets [i].targetHit();
-                    }
+                    if (targets [i].wasHit(shotLocation.getX(), shotLocation.getY(), POSITION)) targets [i].targetHit();
                 }
             }
         });
 
         //Checking for name and number of tries emptiness
-        playerName.setOnKeyTyped(event -> {
-            if (playerName.getText().length() > 1 && !playerName.getText().contains("|") && numTries.getText().matches("\\d\\d*")) btnStart.setDisable(false);
-            else btnStart.setDisable(true);
-        });
+        playerName.setOnKeyTyped(event -> btnStart.setDisable(playerName.getText().length() <= 1 || playerName.getText().contains("|") || !numTries.getText().matches("\\d\\d*")));
 
-        numTries.setOnKeyTyped(event -> {
-            if (numTries.getText().matches("\\d\\d*") && playerName.getText().length() > 1 && !playerName.getText().contains("|")) btnStart.setDisable(false);
-            else btnStart.setDisable(true);
-        });
+        numTries.setOnKeyTyped(event -> btnStart.setDisable(!numTries.getText().matches("\\d\\d*") || playerName.getText().length() <= 1 || playerName.getText().contains("|")));
     }
 
     //Sets everything up for game start
-    public void start(ActionEvent actionEvent) {
+    public void start() {
         //Gets values of settings and disables changes to them; allows click listeners
         if (inputWind.getSelectedToggle() == windNone) WIND = 0;
         else if (inputWind.getSelectedToggle() == windLight) WIND = 1;
@@ -261,8 +250,8 @@ public class MainController implements Initializable {
     //Resets all targets, makes settings available and stops wind and fatigue simulation
     private void resetTargets(WindSimulator windSimulator, FatigueSimulator fatigueSimulator, Timeline uiChange) {
         //Stops other threads and UI refreshes
-        windSimulator.stop();
-        fatigueSimulator.stop();
+        windSimulator.interrupt();
+        fatigueSimulator.interrupt();
         uiChange.stop();
 
         //Stops click listeners
@@ -288,9 +277,8 @@ public class MainController implements Initializable {
 
     //Checks if all targets were hit
     private boolean checkAllShot() {
-        for (int i = 0; i < targets.length; i++) {
-            if (targets[i].isShot()) {}
-            else return false;
+        for (Target target : targets) {
+            if (!target.isShot()) return false;
         }
         return true;
     }
