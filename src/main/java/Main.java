@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -14,6 +15,7 @@ public class Main extends Application {
         Parent root = loader.load();
         controller = loader.getController();
         primaryStage.setTitle("Shooting Game");
+        primaryStage.getIcons().add(new Image("/img/icon.png"));
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -21,7 +23,9 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
-        controller.stop();
+        try {
+            controller.stop();
+        } catch (NullPointerException e) {}
 
         super.stop();
     }

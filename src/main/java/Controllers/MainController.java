@@ -59,10 +59,10 @@ public class MainController implements Initializable {
     String playerNameString = null;
     int WIND = 0;
     int REST = 0;
-    int windOffset = 0;
-    int restOffsetX = 0;
-    int restOffsetY = 0;
-    int gravityOffset = 0; //WAS -10 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    double windOffset = 0;
+    double restOffsetX = 0;
+    double restOffsetY = 0;
+    int gravityOffset = -10;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -81,8 +81,8 @@ public class MainController implements Initializable {
 
         //Sets custom cursor (sniper sights)
         Image sniperSights = new Image("img/sights.png");
-        ImageCursor sights = new ImageCursor(sniperSights, 480, 480);
-        gamePane.getParent().setCursor(sights);
+        ImageCursor sights = new ImageCursor(sniperSights, 16, 16);
+        gamePane.setCursor(sights);
 
         //Setting onclick-checkers
         for (int i = 0; i < 5; i++) {
@@ -112,7 +112,7 @@ public class MainController implements Initializable {
                 Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
 
                 //Adds hitmarker
-                Circle hitmarker = new Circle(0.5, Color.GREEN);
+                Circle hitmarker = new Circle(5, Color.GREEN);
                 hitmarker.setCenterX(shotLocation.getX());
                 hitmarker.setCenterY(shotLocation.getY());
                 hitmarks.add(hitmarker);
@@ -122,12 +122,12 @@ public class MainController implements Initializable {
 
         //Checking for name and number of tries emptiness
         playerName.setOnKeyTyped(event -> {
-            if (playerName.getText().length() > 1 && numTries.getText().matches("\\d\\d*")) btnStart.setDisable(false);
+            if (playerName.getText().length() > 1 && !playerName.getText().contains("|") && numTries.getText().matches("\\d\\d*")) btnStart.setDisable(false);
             else btnStart.setDisable(true);
         });
 
         numTries.setOnKeyTyped(event -> {
-            if (numTries.getText().matches("\\d\\d*") && playerName.getText().length() > 1) btnStart.setDisable(false);
+            if (numTries.getText().matches("\\d\\d*") && playerName.getText().length() > 1 && !playerName.getText().contains("|")) btnStart.setDisable(false);
             else btnStart.setDisable(true);
         });
     }
@@ -161,7 +161,7 @@ public class MainController implements Initializable {
         uiChange = new Timeline(new KeyFrame(Duration.millis(100), event -> {
             //Updates labels in UI
             bulletCounter.setText(remainingShots +"/" +numShots);
-            statusRest.setText(String.valueOf(windOffset));
+            statusRest.setText(String.valueOf(windSimulator.getWindX()));
 
             //Updates values for wind offset
             windOffset = windSimulator.getWindX();

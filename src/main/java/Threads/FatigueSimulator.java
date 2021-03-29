@@ -6,6 +6,9 @@ public class FatigueSimulator extends Thread {
     private int rested;
     private int fatigueLevel = -1;
 
+    private double offsetX;
+    private double offsetY;
+
     public FatigueSimulator(int rested) {
         this.rested = rested;
     }
@@ -29,5 +32,13 @@ public class FatigueSimulator extends Thread {
 
     public int getFatigueLevel() {
         return fatigueLevel;
+    }
+
+    public double getOffsetX() {
+        return offsetX;
+    }
+
+    public double getOffsetY() {
+        return offsetY;
     }
 }
