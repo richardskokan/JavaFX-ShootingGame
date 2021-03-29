@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -31,11 +32,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    //Toggles and toggle groups
     public JFXRadioButton posStand, posProne, windNone, windLight, windStrong, rested, heavyBreathing;
     ToggleGroup inputPosition = new ToggleGroup();
     ToggleGroup inputWind = new ToggleGroup();
     ToggleGroup inputComfort = new ToggleGroup();
 
+    //Other UI elements
     public ImageView windImage;
     public Label statusRest;
     public Label bulletCounter;
@@ -44,6 +47,7 @@ public class MainController implements Initializable {
     public JFXButton btnStart;
     public JFXButton btnScore;
 
+    //Pane containing targets and hitmarks with targets and hitmarks
     public Pane gamePane;
     Target target0 = new Target(137, 183);
     Target target1 = new Target(337, 183);
@@ -53,10 +57,12 @@ public class MainController implements Initializable {
     Target [] targets = {target0, target1, target2, target3, target4};
     ArrayList<Circle> hitmarks = new ArrayList<>();
 
+    //Simulation and UI refreshing threads
     WindSimulator windSimulator;
     FatigueSimulator fatigueSimulator;
     Timeline uiChange = new Timeline();
 
+    //Other parameters
     boolean running = false;
     int numShots = 0;
     int remainingShots = 0;
@@ -68,6 +74,7 @@ public class MainController implements Initializable {
     double restOffsetX = 0;
     double restOffsetY = 0;
     int gravityOffset = -10;
+    int score = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -128,6 +135,7 @@ public class MainController implements Initializable {
         });
     }
 
+    //Sets everything up for game start
     public void start(ActionEvent actionEvent) {
         //Gets values of settings and disables changes to them; allows click listeners
         if (inputWind.getSelectedToggle() == windNone) WIND = 0;
@@ -199,7 +207,7 @@ public class MainController implements Initializable {
             //Checks if the game ended
             if (remainingShots == 0 || checkAllShot()) {
                 //Shows score info and saves score
-                writeScore();
+                endGame();
 
                 //Resets the whole simulation/game
                 resetTargets(windSimulator, fatigueSimulator, uiChange);
@@ -228,19 +236,26 @@ public class MainController implements Initializable {
         uiChange.stop();
     }
 
-    //TODO Write name, score and difficulty settings into a text file
-    private void writeScore() {
-        //TODO score
-
-        //Opens new window with final score
+    //Opens a window when game ends
+    private void endGame() {
         try {
+            //Loads .fxml file, gets its controller and sends data to controller to save player's result
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/endGame.fxml"));
             Parent gameEnd = loader.load();
+            endGameController endGameController = loader.getController();
+            endGameController.setData(playerNameString, score, numShots, POSITION, WIND, REST);
+
+            //Creates popup window stage, sets needed parameters and shows it
             Stage gameEndWindow = new Stage();
+            gameEndWindow.initModality(Modality.APPLICATION_MODAL);
+            gameEndWindow.initOwner(gamePane.getScene().getWindow());
+            gameEndWindow.setTitle("Shooting Game");
+            gameEndWindow.getIcons().add(new Image("/img/icon.png"));
             gameEndWindow.setScene(new Scene(gameEnd));
             gameEndWindow.setResizable(false);
+            gameEndWindow.setAlwaysOnTop(true);
             gameEndWindow.show();
-        } catch (Exception e) {}
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     //Resets all targets, makes settings available and stops wind and fatigue simulation

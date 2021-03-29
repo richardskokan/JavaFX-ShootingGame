@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.endGameController">
     <JFXButton fx:id="btnGameEndOK" layoutX="72.0" layoutY="161.0" prefHeight="25.0" prefWidth="56.0" text="OK"><cursor><Cursor fx:constant="HAND" /></cursor>
       <font>
          <Font size="14.0" />

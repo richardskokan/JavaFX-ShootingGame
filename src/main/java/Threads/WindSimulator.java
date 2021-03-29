@@ -36,7 +36,7 @@ public class WindSimulator extends Thread {
 
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) { e.printStackTrace(); }
         } while (true);
     }
 

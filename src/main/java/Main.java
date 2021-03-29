@@ -25,7 +25,7 @@ public class Main extends Application {
     public void stop() throws Exception {
         try {
             controller.stop();
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) { e.printStackTrace(); }
 
         super.stop();
     }
