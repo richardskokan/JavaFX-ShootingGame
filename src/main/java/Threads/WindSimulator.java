@@ -3,7 +3,7 @@ package Threads;
 import java.util.Random;
 
 public class WindSimulator extends Thread {
-    private final int WIND_LIMIT = 25;
+    private final int WIND_LIMIT = 40;
 
     private Integer windStrength;
     private double windX;

@@ -2,10 +2,14 @@ package Objects;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import java.awt.geom.Point2D;
 
 public class Target {
     Circle innerTarget = new Circle(40);
     Circle outerTarget = new Circle(80);
+
+    double x;
+    double y;
 
     boolean shot = false;
 
@@ -20,9 +24,11 @@ public class Target {
 
         innerTarget.setLayoutX(x);
         innerTarget.setLayoutY(y);
+        this.x = x;
 
         outerTarget.setLayoutX(x);
         outerTarget.setLayoutY(y);
+        this.y = y;
     }
 
     public Circle getInnerTarget() {
@@ -61,5 +67,15 @@ public class Target {
 
     public boolean isShot() {
         return shot;
+    }
+
+    public boolean wasHit(double x, double y, int position) {
+        if (position == 0) {
+            if (Point2D.distance(this.x, this.y, x, y) < innerTarget.getRadius() + innerTarget.getStrokeWidth()) return true;
+            else return false;
+        } else {
+            if (Point2D.distance(this.x, this.y, x, y) < outerTarget.getRadius() + outerTarget.getStrokeWidth()) return true;
+            else return false;
+        }
     }
 }

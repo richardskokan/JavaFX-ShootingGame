@@ -59,6 +59,7 @@ public class MainController implements Initializable {
     String playerNameString = null;
     int WIND = 0;
     int REST = 0;
+    int POSITION = 0;
     double windOffset = 0;
     double restOffsetX = 0;
     double restOffsetY = 0;
@@ -84,31 +85,13 @@ public class MainController implements Initializable {
         ImageCursor sights = new ImageCursor(sniperSights, 16, 16);
         gamePane.setCursor(sights);
 
-        //Setting onclick-checkers
-        for (int i = 0; i < 5; i++) {
-            int finalI = i;
-            targets [i].getInnerTarget().setOnMouseClicked(event -> {
-                Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
-
-                //Checks if target was hit
-                if (targets [finalI].getInnerTarget().contains(shotLocation) && !targets [finalI].isShot() && running) {
-                    targets [finalI].targetHit();
-                }
-            });
-
-            targets [i].getOuterTarget().setOnMouseClicked(event -> {
-                Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
-
-                //Checks if target was hit
-                if (targets [finalI].getOuterTarget().contains(shotLocation) && !targets [finalI].isShot() && running) {
-                    targets [finalI].targetHit();
-                }
-            });
-
-        }
+        //Controls responses to mouse while shooting
         gamePane.setOnMouseClicked(event -> {
             if (running) {
+                //"Removes used bullet"
                 remainingShots--;
+
+                //Location where the shot landed
                 Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
 
                 //Adds hitmarker
@@ -117,6 +100,15 @@ public class MainController implements Initializable {
                 hitmarker.setCenterY(shotLocation.getY());
                 hitmarks.add(hitmarker);
                 gamePane.getChildren().addAll(hitmarks.get(hitmarks.size() - 1));
+
+                //Checks if target was hit
+                for (int i = 0; i < 5; i++) {
+                    if (POSITION == 0) {
+                        if (targets [i].wasHit(shotLocation.getX(), shotLocation.getY(), POSITION)) targets [i].targetHit();
+                    } else {
+                        if (targets [i].wasHit(shotLocation.getX(), shotLocation.getY(), POSITION)) targets [i].targetHit();
+                    }
+                }
             }
         });
 
@@ -141,6 +133,9 @@ public class MainController implements Initializable {
         if (inputComfort.getSelectedToggle() == rested) REST = 0;
         else if (inputComfort.getSelectedToggle() == heavyBreathing) REST = 1;
 
+        if (inputPosition.getSelectedToggle() == posStand) POSITION = 1;
+        else POSITION = 0;
+
         numShots = remainingShots = Integer.parseInt(numTries.getText());
         playerNameString = playerName.getText();
 
@@ -161,10 +156,41 @@ public class MainController implements Initializable {
         uiChange = new Timeline(new KeyFrame(Duration.millis(100), event -> {
             //Updates labels in UI
             bulletCounter.setText(remainingShots +"/" +numShots);
-            statusRest.setText(String.valueOf(windSimulator.getWindX()));
+            //TODO statusRest.setText("");
 
-            //Updates values for wind offset
+            //Updates values for wind offset and wind indication
             windOffset = windSimulator.getWindX();
+            if (WIND != 0) {
+                if (windOffset > 0) {
+                    if (windOffset > 15) {
+                        if (windOffset > 35) {
+                            if (windOffset > 60) {
+                                windImage.setImage(new Image("img/windIndicators/right-strong.png"));
+                            } else {
+                                windImage.setImage(new Image("img/windIndicators/right-mild.png"));
+                            }
+                        } else {
+                            windImage.setImage(new Image("img/windIndicators/right-gentle.png"));
+                        }
+                    } else {
+                        windImage.setImage(new Image("img/windIndicators/right-light.png"));
+                    }
+                } else {
+                    if (windOffset < -15) {
+                        if (windOffset < -35) {
+                            if (windOffset < -60) {
+                                windImage.setImage(new Image("img/windIndicators/left-strong.png"));
+                            } else {
+                                windImage.setImage(new Image("img/windIndicators/left-mild.png"));
+                            }
+                        } else {
+                            windImage.setImage(new Image("img/windIndicators/left-gentle.png"));
+                        }
+                    } else {
+                        windImage.setImage(new Image("img/windIndicators/left-light.png"));
+                    }
+                }
+            }
 
             //Checks if the game ended
             if (remainingShots == 0 || checkAllShot()) {
@@ -198,7 +224,7 @@ public class MainController implements Initializable {
         uiChange.stop();
     }
 
-    //Write name, score and difficulty settings into a text file (TODO)
+    //TODO Write name, score and difficulty settings into a text file
     private void writeScore() {
     }
 
@@ -222,6 +248,7 @@ public class MainController implements Initializable {
         numTries.setText("");
         statusRest.setText("Unavenosť");
         bulletCounter.setText("Počet nábojov");
+        windImage.setImage(null);
 
         //Resets targets
         for (int i = 0; i < 5; i++) {
