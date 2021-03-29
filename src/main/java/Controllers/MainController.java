@@ -10,9 +10,12 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -20,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -92,7 +96,7 @@ public class MainController implements Initializable {
                 remainingShots--;
 
                 //Location where the shot landed
-                Point2D shotLocation = new Point2D(event.getX() + windOffset + restOffsetX, event.getY() + restOffsetY - gravityOffset);
+                Point2D shotLocation = new Point2D(event.getX() + windOffset, event.getY() - gravityOffset);
 
                 //Adds hitmarker
                 Circle hitmarker = new Circle(5, Color.GREEN);
@@ -226,6 +230,17 @@ public class MainController implements Initializable {
 
     //TODO Write name, score and difficulty settings into a text file
     private void writeScore() {
+        //TODO score
+
+        //Opens new window with final score
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/endGame.fxml"));
+            Parent gameEnd = loader.load();
+            Stage gameEndWindow = new Stage();
+            gameEndWindow.setScene(new Scene(gameEnd));
+            gameEndWindow.setResizable(false);
+            gameEndWindow.show();
+        } catch (Exception e) {}
     }
 
     //Resets all targets, makes settings available and stops wind and fatigue simulation
