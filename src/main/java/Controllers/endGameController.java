@@ -46,9 +46,7 @@ public class endGameController implements Initializable {
             //Writes player's score to file
             write.write(String.format("%15s %10s %5s %3s %3s %3s \r\n", name, score, tries, position, wind, rested));
             write.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
     //Checks if file exists, if not creates it and adds a header

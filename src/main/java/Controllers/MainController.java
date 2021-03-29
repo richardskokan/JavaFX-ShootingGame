@@ -26,6 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -244,7 +245,23 @@ public class MainController implements Initializable {
             gameEndWindow.setResizable(false);
             gameEndWindow.setAlwaysOnTop(true);
             gameEndWindow.show();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (IOException ignored) {}
+    }
+
+    //Opens a window with top scores
+    public void scores() {
+        try {
+            Parent scores = FXMLLoader.load(getClass().getResource("/layouts/scores.fxml"));
+            Stage scoreWindow = new Stage();
+            scoreWindow.initModality(Modality.APPLICATION_MODAL);
+            scoreWindow.initOwner(gamePane.getScene().getWindow());
+            scoreWindow.setTitle("Shooting Game - Najvyššie skóre");
+            scoreWindow.getIcons().add(new Image("/img/icon.png"));
+            scoreWindow.setScene(new Scene(scores));
+            scoreWindow.setResizable(false);
+            scoreWindow.setAlwaysOnTop(true);
+            scoreWindow.show();
+        } catch (IOException ignored) {}
     }
 
     //Resets all targets, makes settings available and stops wind and fatigue simulation
