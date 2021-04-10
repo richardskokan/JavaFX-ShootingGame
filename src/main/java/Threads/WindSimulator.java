@@ -12,7 +12,7 @@ public class WindSimulator extends Thread {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         super.run();
 
         if (windStrength == null || windStrength == 0) return;

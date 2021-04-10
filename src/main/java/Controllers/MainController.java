@@ -135,7 +135,7 @@ public class MainController implements Initializable {
     }
 
     //Sets everything up for game start
-    public void start() {
+    public synchronized void start() {
         //Gets values of settings and disables changes to them; allows click listeners
         if (inputWind.getSelectedToggle() == windNone) WIND = 0;
         else if (inputWind.getSelectedToggle() == windLight) WIND = 1;

@@ -14,7 +14,7 @@ public class FatigueSimulator extends Thread {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         super.run();
 
         //if (rested == 0) return;
@@ -25,7 +25,7 @@ public class FatigueSimulator extends Thread {
             fatigueLevel++;
 
             /*try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
             } catch (InterruptedException e) { e.printStackTrace(); }*/
         } while (true);
     }
