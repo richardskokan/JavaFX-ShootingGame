@@ -5,6 +5,7 @@
 
 <Pane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ScoreController">
    <children>
-      <TableView fx:id="scoresTable" layoutX="10.0" layoutY="10.0" prefHeight="280.0" prefWidth="480.0" />
+      <TableView fx:id="scoresTable" layoutX="10.0" layoutY="10.0" prefHeight="240.0" prefWidth="480.0" />
+      <Button layoutX="386.0" layoutY="261.0" mnemonicParsing="false" onAction="#deleteScores" prefHeight="25.0" prefWidth="104.0" text="Vymazať skóre" />
    </children>
 </Pane>

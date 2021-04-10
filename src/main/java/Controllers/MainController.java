@@ -264,7 +264,7 @@ public class MainController implements Initializable {
             results.createNewFile();
 
             PrintWriter write = new PrintWriter(new BufferedWriter(new FileWriter(results)));
-            write.write(String.format("%15s %10s %5s %3s %3s %3s\n", "NAME", "SCORE", "SHOTS", "POS", "WIND", "REST"));
+            write.write(String.format("%15s %10s %5s %3s %4s %4s\n", "NAME", "SCORE", "SHOTS", "POS", "WIND", "REST"));
             write.close();
         }
     }
