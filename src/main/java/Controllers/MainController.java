@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.robot.Robot;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -162,10 +163,26 @@ public class MainController implements Initializable {
         fatigueSimulator = new FatigueSimulator(REST);
         fatigueSimulator.start();
 
+        //Creates Robot for "fatigue cursor movement"
+        Robot cursorMover = new Robot();
+
         //Value updates & UI updates of wind direction & strength and fatigue level; checks if player is finished (out of shots/hit all targets)
-        uiChange = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-            //TODO Rest simulation
-            //statusRest.setText("");
+        uiChange = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+            //Sets values for cursor movement (offsets) and fatigue information
+            statusRest.setText(String.valueOf(fatigueSimulator.getFatigueLevel()));
+            restOffsetX = fatigueSimulator.getOffsetX();
+            restOffsetY = fatigueSimulator.getOffsetY();
+
+            //Checks if the cursor could move more on the X axis (disables "fatigue cursor movement" if out of gamePane)
+            if (cursorMover.getMouseX() + restOffsetX <= 1482 && cursorMover.getMouseX() + restOffsetX >= 440
+                    && cursorMover.getMouseY() + restOffsetY <= 710 && cursorMover.getMouseY() + restOffsetY >= 328) {
+                cursorMover.mouseMove(cursorMover.getMouseX() + restOffsetX, cursorMover.getMouseY());
+            }
+            //Checks if the cursor could move more on the Y axis (disables "fatigue cursor movement" if out of gamePane)
+            if (cursorMover.getMouseY() + restOffsetY <= 690 && cursorMover.getMouseY() + restOffsetY >= 348
+                    && cursorMover.getMouseX() + restOffsetX <= 1497 && cursorMover.getMouseX() + restOffsetX >= 420) {
+                cursorMover.mouseMove(cursorMover.getMouseX(), cursorMover.getMouseY() + restOffsetY);
+            }
 
             //Updates labels in UI
             bulletCounter.setText(remainingShots +"/" +numShots);
