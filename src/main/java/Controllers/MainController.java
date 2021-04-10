@@ -26,7 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -76,8 +76,16 @@ public class MainController implements Initializable {
     int gravityOffset = -10;
     int score = 0;
 
+    //File with scores
+    private final File results = new File("results.txt");
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Checks if file with scores exists
+        try {
+            checkForResults();
+        } catch (IOException ignored) {}
+
         //Setting ToggleGroups and default values for radio buttons and start button
         posStand.setToggleGroup(inputPosition); posProne.setToggleGroup(inputPosition);
         windNone.setToggleGroup(inputWind); windLight.setToggleGroup(inputWind); windStrong.setToggleGroup(inputWind);
@@ -119,10 +127,10 @@ public class MainController implements Initializable {
             }
         });
 
-        //Checking for name and number of tries emptiness
-        playerName.setOnKeyTyped(event -> btnStart.setDisable(playerName.getText().length() <= 1 || playerName.getText().contains("|") || !numTries.getText().matches("\\d\\d*")));
+        //Checking for name and number of tries emptiness and values
+        playerName.setOnKeyTyped(event -> btnStart.setDisable(playerName.getText().length() <= 1 || playerName.getText().contains("|") || !numTries.getText().matches("\\d\\d*") || playerName.getText().length() > 15));
 
-        numTries.setOnKeyTyped(event -> btnStart.setDisable(!numTries.getText().matches("\\d\\d*") || playerName.getText().length() <= 1 || playerName.getText().contains("|")));
+        numTries.setOnKeyTyped(event -> btnStart.setDisable(!numTries.getText().matches("\\d\\d*") || playerName.getText().length() <= 1 || playerName.getText().contains("|") || numTries.getText().length() > 5));
     }
 
     //Sets everything up for game start
@@ -156,9 +164,11 @@ public class MainController implements Initializable {
 
         //Value updates & UI updates of wind direction & strength and fatigue level; checks if player is finished (out of shots/hit all targets)
         uiChange = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+            //TODO Rest simulation
+            //statusRest.setText("");
+
             //Updates labels in UI
             bulletCounter.setText(remainingShots +"/" +numShots);
-            //TODO statusRest.setText("");
 
             //Updates values for wind offset and wind indication
             windOffset = windSimulator.getWindX();
@@ -246,6 +256,17 @@ public class MainController implements Initializable {
             gameEndWindow.setAlwaysOnTop(true);
             gameEndWindow.show();
         } catch (IOException ignored) {}
+    }
+
+    //Checks if file with results exists, if not creates it and adds a header
+    private void checkForResults() throws IOException {
+        if (!results.isFile()) {
+            results.createNewFile();
+
+            PrintWriter write = new PrintWriter(new BufferedWriter(new FileWriter(results)));
+            write.write(String.format("%15s %10s %5s %3s %3s %3s\n", "NAME", "SCORE", "SHOTS", "POS", "WIND", "REST"));
+            write.close();
+        }
     }
 
     //Opens a window with top scores

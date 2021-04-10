@@ -1,3 +1,0 @@
-           NAME      SCORE SHOTS POS WIND REST 
-         asdasd          0    12   1   0   0 
-         asdasd          0     5   1   0   0 
