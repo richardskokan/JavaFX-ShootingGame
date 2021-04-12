@@ -3,7 +3,7 @@ package Threads;
 import java.util.Random;
 
 public class FatigueSimulator extends Thread {
-    private int rested;
+    private final int rested;
     private double fatigueLevel = -1;
 
     private double offsetX;

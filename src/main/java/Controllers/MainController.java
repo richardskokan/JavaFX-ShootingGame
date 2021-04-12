@@ -111,6 +111,7 @@ public class MainController implements Initializable {
         ImageCursor sights = new ImageCursor(sniperSights, 16, 16);
         gamePane.setCursor(sights);
 
+        //Start and Stop button (changes and effects of button push)
         btnStart.setOnAction(event -> {
             if (running) {
                 btnStart.setText("Start");
@@ -155,12 +156,8 @@ public class MainController implements Initializable {
             mouseX = event.getX();
             mouseY = event.getY();
         });
-        gamePane.setOnMouseEntered(event -> {
-            isInside = true;
-        });
-        gamePane.setOnMouseExited(event -> {
-            isInside = false;
-        });
+        gamePane.setOnMouseEntered(event -> isInside = true);
+        gamePane.setOnMouseExited(event -> isInside = false);
 
         //Checking for name and number of tries emptiness and values
         playerName.setOnKeyTyped(event -> btnStart.setDisable(playerName.getText().length() <= 1 || !numTries.getText().matches("\\d\\d*") || playerName.getText().length() > 15  || Integer.parseInt(numTries.getText()) < 5));

@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.*;

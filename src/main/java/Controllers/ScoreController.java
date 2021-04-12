@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class ScoreController implements Initializable {
 
     public TableView<Score> scoresTable;
-    private ObservableList<Score> scores = FXCollections.observableArrayList();
+    private final ObservableList<Score> scores = FXCollections.observableArrayList();
     File scoreFile = new File("results.txt");
 
     @Override
