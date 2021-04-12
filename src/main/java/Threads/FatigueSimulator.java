@@ -28,8 +28,8 @@ public class FatigueSimulator extends Thread {
         do {
             if (fatigueLevel < 10) fatigueLevel = Math.round((fatigueLevel + 0.02) * 100.0) / 100.0;
 
-            offsetX = (fatigueGenerator.nextDouble() * 2 -1) * 1;
-            offsetY = (fatigueGenerator.nextDouble() * 2 -1) * 1;
+            offsetX = (fatigueGenerator.nextDouble() * 2 -1) * (2.5 / fatigueLevel);
+            offsetY = (fatigueGenerator.nextDouble() * 2 -1) * (2.5 / fatigueLevel);
 
             try {
                 Thread.sleep(10);

@@ -111,6 +111,21 @@ public class MainController implements Initializable {
         ImageCursor sights = new ImageCursor(sniperSights, 16, 16);
         gamePane.setCursor(sights);
 
+        btnStart.setOnAction(event -> {
+            if (running) {
+                btnStart.setText("Start");
+                btnStart.setDisable(true);
+
+                stop();
+                resetTargets();
+            } else {
+                btnStart.setText("Stop");
+                btnStart.setDisable(false);
+
+                start();
+            }
+        });
+
         //Controls responses to mouse while shooting and checks its position
         gamePane.setOnMouseClicked(event -> {
             if (running) {
@@ -169,7 +184,7 @@ public class MainController implements Initializable {
         numShots = remainingShots = Integer.parseInt(numTries.getText());
         playerNameString = playerName.getText();
 
-        numTries.setDisable(true); playerName.setDisable(true); btnStart.setDisable(true); btnScore.setDisable(true); posStand.setDisable(true); posProne.setDisable(true);
+        numTries.setDisable(true); playerName.setDisable(true); btnScore.setDisable(true); posStand.setDisable(true); posProne.setDisable(true);
             windNone.setDisable(true); windLight.setDisable(true); windStrong.setDisable(true); rested.setDisable(true); heavyBreathing.setDisable(true);
 
         running = true;
@@ -250,7 +265,7 @@ public class MainController implements Initializable {
                 endGame();
 
                 //Resets the whole simulation/game
-                resetTargets(windSimulator, fatigueSimulator, uiChange);
+                resetTargets();
             }
         }));
         uiChange.setCycleCount(Animation.INDEFINITE);
@@ -326,7 +341,7 @@ public class MainController implements Initializable {
     }
 
     //Resets all targets, makes settings available and stops wind and fatigue simulation
-    private void resetTargets(WindSimulator windSimulator, FatigueSimulator fatigueSimulator, Timeline uiChange) {
+    private void resetTargets() {
         //Stops other threads and UI refreshes
         windSimulator.interrupt();
         fatigueSimulator.interrupt();
