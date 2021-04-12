@@ -129,9 +129,9 @@ public class MainController implements Initializable {
         });
 
         //Checking for name and number of tries emptiness and values
-        playerName.setOnKeyTyped(event -> btnStart.setDisable(playerName.getText().length() <= 1 || playerName.getText().contains("|") || !numTries.getText().matches("\\d\\d*") || playerName.getText().length() > 15));
+        playerName.setOnKeyTyped(event -> btnStart.setDisable(playerName.getText().length() <= 1 || !numTries.getText().matches("\\d\\d*") || playerName.getText().length() > 15  || Integer.parseInt(numTries.getText()) < 5));
 
-        numTries.setOnKeyTyped(event -> btnStart.setDisable(!numTries.getText().matches("\\d\\d*") || playerName.getText().length() <= 1 || playerName.getText().contains("|") || numTries.getText().length() > 5));
+        numTries.setOnKeyTyped(event -> btnStart.setDisable(!numTries.getText().matches("\\d\\d*") || playerName.getText().length() <= 1 || numTries.getText().length() > 5 || Integer.parseInt(numTries.getText()) < 5));
     }
 
     //Sets everything up for game start
@@ -141,11 +141,11 @@ public class MainController implements Initializable {
         else if (inputWind.getSelectedToggle() == windLight) WIND = 1;
         else if (inputWind.getSelectedToggle() == windStrong) WIND = 2;
 
-        if (inputComfort.getSelectedToggle() == rested) REST = 0;
-        else if (inputComfort.getSelectedToggle() == heavyBreathing) REST = 1;
+        if (inputComfort.getSelectedToggle() == rested) REST = 1;
+        else if (inputComfort.getSelectedToggle() == heavyBreathing) REST = 2;
 
-        if (inputPosition.getSelectedToggle() == posStand) POSITION = 1;
-        else POSITION = 0;
+        if (inputPosition.getSelectedToggle() == posStand) POSITION = 2;
+        else POSITION = 1;
 
         numShots = remainingShots = Integer.parseInt(numTries.getText());
         playerNameString = playerName.getText();
@@ -222,7 +222,11 @@ public class MainController implements Initializable {
             }
 
             //Checks if the game ended
-            if (remainingShots == 0 || checkAllShot()) {
+            if (remainingShots == 0 || targetsRemaining() == 0) {
+                //Calculates score
+                score = (5000 + 2500 * WIND + 2500 * REST + 2500 * POSITION) / numShots;
+                if (targetsRemaining() > 0) score /= targetsRemaining();
+
                 //Shows score info and saves score
                 endGame();
 
@@ -330,11 +334,13 @@ public class MainController implements Initializable {
         }
     }
 
-    //Checks if all targets were hit
-    private boolean checkAllShot() {
+    //Checks how many targets are left
+    private int targetsRemaining() {
+        int remaining = 5;
+
         for (Target target : targets) {
-            if (!target.isShot()) return false;
+            if (target.isShot()) remaining--;
         }
-        return true;
+        return remaining;
     }
 }

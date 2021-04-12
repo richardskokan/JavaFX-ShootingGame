@@ -3,7 +3,9 @@ package Controllers;
 import Objects.Score;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -23,6 +25,8 @@ public class endGameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        labelScore.setAlignment(Pos.CENTER);
+
         btnGameEndOK.setOnAction(event -> {
             //Saves users score
             saveScore();
@@ -54,5 +58,7 @@ public class endGameController implements Initializable {
         this.position = position;
         this.wind = wind;
         this.rested = rested;
+
+        labelScore.setText(String.valueOf(score));
     }
 }
