@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class FatigueSimulator extends Thread {
     private int rested;
-    private int fatigueLevel = -1;
+    private double fatigueLevel = -1;
 
     private double offsetX;
     private double offsetY;
@@ -17,20 +17,34 @@ public class FatigueSimulator extends Thread {
     public synchronized void run() {
         super.run();
 
-        //if (rested == 0) return;
+        if (rested == 1) {
+            return;
+        }
+
+        fatigueLevel = 0;
 
         Random fatigueGenerator = new Random();
 
         do {
-            fatigueLevel++;
+            if (fatigueLevel < 10) fatigueLevel = Math.round((fatigueLevel + 0.02) * 100.0) / 100.0;
 
-            /*try {
+            offsetX = (fatigueGenerator.nextDouble() * 2 -1) * 1;
+            offsetY = (fatigueGenerator.nextDouble() * 2 -1) * 1;
+
+            try {
                 Thread.sleep(10);
-            } catch (InterruptedException e) { e.printStackTrace(); }*/
+            } catch (InterruptedException ignored) {}
         } while (true);
     }
 
-    public int getFatigueLevel() {
+    public void playerFired() {
+        if (rested != 1) {
+            if (fatigueLevel - 5 < 0) fatigueLevel = 0;
+            else fatigueLevel -= 5;
+        }
+    }
+
+    public double getFatigueLevel() {
         return fatigueLevel;
     }
 

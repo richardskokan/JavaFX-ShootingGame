@@ -29,6 +29,7 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -77,6 +78,11 @@ public class MainController implements Initializable {
     int gravityOffset = -10;
     int score = 0;
 
+    //Mouse movement parameters
+    double mouseX = 0;
+    double mouseY = 0;
+    private boolean isInside;
+
     //File with scores
     private final File results = new File("results.txt");
 
@@ -105,11 +111,14 @@ public class MainController implements Initializable {
         ImageCursor sights = new ImageCursor(sniperSights, 16, 16);
         gamePane.setCursor(sights);
 
-        //Controls responses to mouse while shooting
+        //Controls responses to mouse while shooting and checks its position
         gamePane.setOnMouseClicked(event -> {
             if (running) {
                 //"Removes used bullet"
                 remainingShots--;
+
+                //Lowers level of "comfort"
+                fatigueSimulator.playerFired();
 
                 //Location where the shot landed
                 Point2D shotLocation = new Point2D(event.getX() + windOffset, event.getY() - gravityOffset);
@@ -126,6 +135,16 @@ public class MainController implements Initializable {
                     if (targets [i].wasHit(shotLocation.getX(), shotLocation.getY(), POSITION)) targets [i].targetHit();
                 }
             }
+        });
+        gamePane.setOnMouseMoved(event -> {
+            mouseX = event.getX();
+            mouseY = event.getY();
+        });
+        gamePane.setOnMouseEntered(event -> {
+            isInside = true;
+        });
+        gamePane.setOnMouseExited(event -> {
+            isInside = false;
         });
 
         //Checking for name and number of tries emptiness and values
@@ -163,24 +182,24 @@ public class MainController implements Initializable {
         fatigueSimulator = new FatigueSimulator(REST);
         fatigueSimulator.start();
 
-        //Creates Robot for "fatigue cursor movement"
+        //Creates Robot for "fatigue cursor movement" and moves cursor to play area (gamePane)
         Robot cursorMover = new Robot();
+        cursorMover.mouseMove(cursorMover.getMouseX() - 450, cursorMover.getMouseY() + 250);
 
         //Value updates & UI updates of wind direction & strength and fatigue level; checks if player is finished (out of shots/hit all targets)
         uiChange = new Timeline(new KeyFrame(Duration.millis(10), event -> {
             //Sets values for cursor movement (offsets) and fatigue information
-            statusRest.setText(String.valueOf(fatigueSimulator.getFatigueLevel()));
+            DecimalFormat numberFormat = new DecimalFormat("#0.00");
+            statusRest.setText(String.valueOf(numberFormat.format(fatigueSimulator.getFatigueLevel())));
             restOffsetX = fatigueSimulator.getOffsetX();
             restOffsetY = fatigueSimulator.getOffsetY();
 
             //Checks if the cursor could move more on the X axis (disables "fatigue cursor movement" if out of gamePane)
-            if (cursorMover.getMouseX() + restOffsetX <= 1482 && cursorMover.getMouseX() + restOffsetX >= 440
-                    && cursorMover.getMouseY() + restOffsetY <= 710 && cursorMover.getMouseY() + restOffsetY >= 328) {
+            if (gamePane.contains(mouseX, mouseY) && isInside) {
                 cursorMover.mouseMove(cursorMover.getMouseX() + restOffsetX, cursorMover.getMouseY());
             }
             //Checks if the cursor could move more on the Y axis (disables "fatigue cursor movement" if out of gamePane)
-            if (cursorMover.getMouseY() + restOffsetY <= 690 && cursorMover.getMouseY() + restOffsetY >= 348
-                    && cursorMover.getMouseX() + restOffsetX <= 1497 && cursorMover.getMouseX() + restOffsetX >= 420) {
+            if (gamePane.contains(mouseX, mouseY) && isInside) {
                 cursorMover.mouseMove(cursorMover.getMouseX(), cursorMover.getMouseY() + restOffsetY);
             }
 
@@ -332,6 +351,8 @@ public class MainController implements Initializable {
         for (int i = 0; i < 5; i++) {
             targets [i].resetTarget();
         }
+
+        isInside = false;
     }
 
     //Checks how many targets are left

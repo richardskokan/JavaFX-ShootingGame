@@ -24,14 +24,14 @@
                <JFXButton fx:id="btnStart" layoutX="155.0" layoutY="31.0" onAction="#start" text="Štart"><cursor><Cursor fx:constant="HAND" /></cursor></JFXButton>
                <JFXButton fx:id="btnScore" layoutX="155.0" layoutY="79.0" onAction="#scores" text="Skóre"><cursor><Cursor fx:constant="HAND" /></cursor></JFXButton>
             </Pane>
-            <JFXRadioButton fx:id="posStand" layoutX="24.0" layoutY="17.0" text="V stoji" ><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
-            <JFXRadioButton fx:id="posProne" layoutX="24.0" layoutY="48.0" text="Na bruchu" ><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
-            <JFXRadioButton fx:id="windNone" layoutX="142.0" layoutY="17.0" text="Bezvetrie" ><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
-            <JFXRadioButton fx:id="windLight" layoutX="142.0" layoutY="48.0" text="Slabý vietor" ><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
-            <JFXRadioButton fx:id="windStrong" layoutX="142.0" layoutY="79.0" text="Silný vietor" ><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
-            <JFXRadioButton fx:id="rested" layoutX="718.0" layoutY="40.0" text="Odpočinutý" ><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
-            <JFXRadioButton fx:id="heavyBreathing" layoutX="718.0" layoutY="71.0" text="Zadýchaný" ><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
+            <JFXRadioButton fx:id="posStand" layoutX="24.0" layoutY="17.0" text="V stoji"><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
+            <JFXRadioButton fx:id="posProne" layoutX="24.0" layoutY="48.0" text="Na bruchu"><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
+            <JFXRadioButton fx:id="windNone" layoutX="142.0" layoutY="17.0" text="Bezvetrie"><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
+            <JFXRadioButton fx:id="windLight" layoutX="142.0" layoutY="48.0" text="Slabý vietor"><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
+            <JFXRadioButton fx:id="windStrong" layoutX="142.0" layoutY="79.0" text="Silný vietor"><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
+            <JFXRadioButton fx:id="rested" layoutX="718.0" layoutY="40.0" text="Odpočinutý"><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
+            <JFXRadioButton fx:id="heavyBreathing" layoutX="718.0" layoutY="71.0" text="Zadýchaný"><cursor><Cursor fx:constant="HAND" /></cursor></JFXRadioButton>
         </Pane>
-        <Pane fx:id="gamePane" layoutX="-8.0" layoutY="117.0" prefHeight="365.0" prefWidth="1074.0" />
+        <Pane fx:id="gamePane" layoutX="-8.0" layoutY="117.0" prefHeight="374.0" prefWidth="1073.0" />
     </Pane>
 </GridPane>
