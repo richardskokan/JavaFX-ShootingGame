@@ -27,7 +27,7 @@ public class EndGameController extends Stage implements Initializable {
     private int position;
     private int wind;
     private int rested;
-    private OnFinish listener;
+    private final OnFinish listener;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

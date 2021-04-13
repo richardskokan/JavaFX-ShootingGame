@@ -12,6 +12,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.robot.Robot;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -127,6 +129,10 @@ public class MainController implements Initializable {
         ImageCursor sights = new ImageCursor(sniperSights, 16, 16);
         gamePane.setCursor(sights);
 
+        //Sets labels to align text to center
+        statusRest.setAlignment(Pos.CENTER);
+        bulletCounter.setAlignment(Pos.CENTER);
+
         //Controls responses to mouse while shooting and checks its position
         gamePane.setOnMouseClicked(event -> {
             if (running) {
@@ -156,12 +162,8 @@ public class MainController implements Initializable {
             mouseX = event.getX();
             mouseY = event.getY();
         });
-        gamePane.setOnMouseEntered(event -> {
-            isInside = true;
-        });
-        gamePane.setOnMouseExited(event -> {
-            isInside = false;
-        });
+        gamePane.setOnMouseEntered(event -> isInside = true);
+        gamePane.setOnMouseExited(event -> isInside = false);
 
         //Checking for name and number of tries emptiness and values
         playerName.setOnKeyTyped(event -> btnStart.setDisable(playerName.getText().length() <= 1 || !numTries.getText().matches("\\d\\d*") || playerName.getText().length() > 15  || Integer.parseInt(numTries.getText()) < 5));
@@ -206,7 +208,8 @@ public class MainController implements Initializable {
         uiChange = new Timeline(new KeyFrame(Duration.millis(10), event -> {
             //Sets values for cursor movement (offsets) and fatigue information
             DecimalFormat numberFormat = new DecimalFormat("#0.00");
-            statusRest.setText(String.valueOf(numberFormat.format(fatigueSimulator.getFatigueLevel())));
+            statusRest.setText("Unavenosť\n" +numberFormat.format(fatigueSimulator.getFatigueLevel()));
+            statusRest.setTextAlignment(TextAlignment.CENTER);
             restOffsetX = fatigueSimulator.getOffsetX();
             restOffsetY = fatigueSimulator.getOffsetY();
 
@@ -219,8 +222,9 @@ public class MainController implements Initializable {
                 cursorMover.mouseMove(cursorMover.getMouseX(), cursorMover.getMouseY() + restOffsetY);
             }
 
-            //Updates labels in UI
-            bulletCounter.setText(remainingShots +"/" +numShots);
+            //Updates bullet counter
+            bulletCounter.setText("Počet nábojov\n" +remainingShots +"/" +numShots);
+            bulletCounter.setTextAlignment(TextAlignment.CENTER);
 
             //Updates values for wind offset and wind indication
             windOffset = windSimulator.getWindX();
@@ -318,8 +322,8 @@ public class MainController implements Initializable {
             windNone.setDisable(false); windLight.setDisable(false); windStrong.setDisable(false); rested.setDisable(false); heavyBreathing.setDisable(false);
         playerName.setText("");
         numTries.setText("");
-        statusRest.setText("Unavenosť");
-        bulletCounter.setText("Počet nábojov");
+        statusRest.setText("Unavenosť\n");
+        bulletCounter.setText("Počet nábojov\n");
 
         //Resets wind indication
         windLeft.setWidth(windRectangleWidth);

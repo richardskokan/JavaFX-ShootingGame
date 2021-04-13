@@ -17,6 +17,8 @@ public class FatigueSimulator extends Thread {
     public synchronized void run() {
         super.run();
 
+        fatigueLevel = 10;
+
         if (rested == 1) {
             return;
         }
