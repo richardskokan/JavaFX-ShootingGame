@@ -14,7 +14,7 @@
         <RowConstraints />
     </rowConstraints>
     <Pane prefHeight="490.0" prefWidth="1057.0">
-        <Pane layoutX="-15.0" layoutY="-5.0" prefHeight="122.0" prefWidth="1091.0" style="-fx-background-color: rgba(128, 128, 128, 0.48); -fx-border-color: black; -fx-border-width: 2px;">
+        <Pane fx:id="uiPane" layoutX="-15.0" layoutY="-5.0" prefHeight="122.0" prefWidth="1091.0" style="-fx-background-color: rgba(128, 128, 128, 0.48); -fx-border-color: black; -fx-border-width: 2px;">
             <ImageView fx:id="windImage" fitHeight="78.0" fitWidth="215.0" layoutX="313.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="bulletCounter" layoutX="578.0" layoutY="70.0" prefHeight="36.0" prefWidth="102.0" text="Počet nábojov" />
             <Label fx:id="statusRest" layoutX="580.0" layoutY="18.0" prefHeight="51.0" prefWidth="102.0" text="Unavenosť" />

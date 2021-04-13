@@ -23,6 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.robot.Robot;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -58,6 +59,12 @@ public class MainController implements Initializable {
     Target target4 = new Target(937, 183);
     Target [] targets = {target0, target1, target2, target3, target4};
     ArrayList<Circle> hitmarks = new ArrayList<>();
+
+    //UI pane and wind indicators
+    public Pane uiPane;
+    Rectangle windLeft = new Rectangle();
+    Rectangle windRight = new Rectangle();
+    private double windRectangleWidth;
 
     //Simulation and UI refreshing threads
     WindSimulator windSimulator;
@@ -105,6 +112,15 @@ public class MainController implements Initializable {
         gamePane.getChildren().addAll(target2.getOuterTarget(), target2.getInnerTarget());
         gamePane.getChildren().addAll(target3.getOuterTarget(), target3.getInnerTarget());
         gamePane.getChildren().addAll(target4.getOuterTarget(), target4.getInnerTarget());
+
+        //Sets image and rectangles for wind indication
+        windImage.setImage(new Image("/img/windIndicator.png"));
+        windRectangleWidth = windImage.getFitWidth()/2 + 2;
+        windLeft.setHeight(windImage.getFitHeight() + 2); windLeft.setWidth(windRectangleWidth); windLeft.setFill(new Color(0.737, 0.737, 0.737, 1));
+        windRight.setHeight(windImage.getFitHeight() + 2); windRight.setWidth(windRectangleWidth); windRight.setFill(new Color(0.737, 0.737, 0.737, 1));
+        windLeft.setX(311); windLeft.setY(17);
+        windRight.setX(312 + windImage.getFitWidth() / 2); windRight.setY(17);
+        uiPane.getChildren().addAll(windLeft, windRight);
 
         //Sets custom cursor (sniper sights)
         Image sniperSights = new Image("img/sights.png");
@@ -208,36 +224,14 @@ public class MainController implements Initializable {
 
             //Updates values for wind offset and wind indication
             windOffset = windSimulator.getWindX();
-            if (WIND != 0) {
-                if (windOffset > 0) {
-                    if (windOffset > 15) {
-                        if (windOffset > 35) {
-                            if (windOffset > 60) {
-                                windImage.setImage(new Image("img/windIndicators/right-strong.png"));
-                            } else {
-                                windImage.setImage(new Image("img/windIndicators/right-mild.png"));
-                            }
-                        } else {
-                            windImage.setImage(new Image("img/windIndicators/right-gentle.png"));
-                        }
-                    } else {
-                        windImage.setImage(new Image("img/windIndicators/right-light.png"));
-                    }
-                } else {
-                    if (windOffset < -15) {
-                        if (windOffset < -35) {
-                            if (windOffset < -60) {
-                                windImage.setImage(new Image("img/windIndicators/left-strong.png"));
-                            } else {
-                                windImage.setImage(new Image("img/windIndicators/left-mild.png"));
-                            }
-                        } else {
-                            windImage.setImage(new Image("img/windIndicators/left-gentle.png"));
-                        }
-                    } else {
-                        windImage.setImage(new Image("img/windIndicators/left-light.png"));
-                    }
-                }
+            if (windOffset < 0) {
+                windLeft.setWidth(windRectangleWidth - (windRectangleWidth / 80) * Math.abs(windOffset));
+                windRight.setWidth(windRectangleWidth);
+                windRight.setX(312 + windImage.getFitWidth() / 2);
+            } else {
+                windRight.setWidth(windRectangleWidth - (windRectangleWidth / 80) * Math.abs(windOffset));
+                windRight.setX(312 + windImage.getFitWidth() / 2 + (windRectangleWidth / 80) * Math.abs(windOffset));
+                windLeft.setWidth(windRectangleWidth);
             }
 
             //Checks if the game ended
@@ -246,11 +240,9 @@ public class MainController implements Initializable {
                 score = (5000 + 2500 * WIND + 2500 * REST + 2500 * POSITION) / numShots;
                 if (targetsRemaining() > 0) score /= targetsRemaining();
 
-                //Shows score info and saves score
+                //Shows score window with score info and stops the game
                 endGame();
-
-                //Resets the whole simulation/game
-                resetTargets(windSimulator, fatigueSimulator, uiChange);
+                stop();
             }
         }));
         uiChange.setCycleCount(Animation.INDEFINITE);
@@ -274,27 +266,18 @@ public class MainController implements Initializable {
         windSimulator.stop();
         fatigueSimulator.stop();
         uiChange.stop();
+
+        //Stops click listeners
+        running = false;
     }
 
     //Opens a window when game ends
     private void endGame() {
         try {
-            //Loads .fxml file, gets its controller and sends data to controller to save player's result
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/endGame.fxml"));
-            Parent gameEnd = loader.load();
-            endGameController endGameController = loader.getController();
-            endGameController.setData(playerNameString, score, numShots, POSITION, WIND, REST);
-
-            //Creates popup window stage, sets needed parameters and shows it
-            Stage gameEndWindow = new Stage();
-            gameEndWindow.initModality(Modality.APPLICATION_MODAL);
-            gameEndWindow.initOwner(gamePane.getScene().getWindow());
-            gameEndWindow.setTitle("Shooting Game");
-            gameEndWindow.getIcons().add(new Image("/img/icon.png"));
-            gameEndWindow.setScene(new Scene(gameEnd));
-            gameEndWindow.setResizable(false);
-            gameEndWindow.setAlwaysOnTop(true);
-            gameEndWindow.show();
+            //Creates instance of EndGAmeController ("creates the end game window") and shows it
+            EndGameController endGame = new EndGameController(gamePane.getScene().getWindow(), this::resetTargets);
+            endGame.setData(playerNameString, score, numShots, POSITION, WIND, REST);
+            endGame.show();
         } catch (IOException ignored) {}
     }
 
@@ -326,15 +309,7 @@ public class MainController implements Initializable {
     }
 
     //Resets all targets, makes settings available and stops wind and fatigue simulation
-    private void resetTargets(WindSimulator windSimulator, FatigueSimulator fatigueSimulator, Timeline uiChange) {
-        //Stops other threads and UI refreshes
-        windSimulator.interrupt();
-        fatigueSimulator.interrupt();
-        uiChange.stop();
-
-        //Stops click listeners
-        running = false;
-
+    private void resetTargets() {
         //Removes hitmarkers
         gamePane.getChildren().removeAll(hitmarks);
 
@@ -345,7 +320,10 @@ public class MainController implements Initializable {
         numTries.setText("");
         statusRest.setText("Unavenosť");
         bulletCounter.setText("Počet nábojov");
-        windImage.setImage(null);
+
+        //Resets wind indication
+        windLeft.setWidth(windRectangleWidth);
+        windRight.setWidth(windRectangleWidth);
 
         //Resets targets
         for (int i = 0; i < 5; i++) {
