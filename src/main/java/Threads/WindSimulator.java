@@ -6,7 +6,6 @@ public class WindSimulator extends Thread {
 
     private final Integer windStrength;
     private double windX;
-    private final int WIND_LIMIT = 40;
 
     public WindSimulator(Integer windStrength) {
         this.windStrength = windStrength;
@@ -21,6 +20,7 @@ public class WindSimulator extends Thread {
 
         Random windGenerator = new Random();
         //Generates initial wind strength
+        int WIND_LIMIT = 40;
         windX = windGenerator.nextInt(WIND_LIMIT) + WIND_LIMIT * (windStrength - 1);
         if (windGenerator.nextBoolean()) windX *= -1;
 
