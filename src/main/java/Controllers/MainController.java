@@ -320,14 +320,13 @@ public class MainController implements Initializable {
         //Makes settings available
         numTries.setDisable(false); playerName.setDisable(false); btnStart.setDisable(true); btnScore.setDisable(false); posStand.setDisable(false); posProne.setDisable(false);
             windNone.setDisable(false); windLight.setDisable(false); windStrong.setDisable(false); rested.setDisable(false); heavyBreathing.setDisable(false);
-        playerName.setText("");
-        numTries.setText("");
         statusRest.setText("Unavenosť\n");
         bulletCounter.setText("Počet nábojov\n");
 
         //Resets wind indication
         windLeft.setWidth(windRectangleWidth);
         windRight.setWidth(windRectangleWidth);
+        windRight.setX(312 + windImage.getFitWidth() / 2);
 
         //Resets targets
         for (int i = 0; i < 5; i++) {
