@@ -240,9 +240,10 @@ public class MainController implements Initializable {
 
             //Checks if the game ended
             if (remainingShots == 0 || targetsRemaining() == 0) {
-                //TODO Calculates score
-                score = (10000 + 2500 * WIND + 2500 * REST + 2500 * POSITION) / (remainingShots + 1) / numShots * 15;
+                //Calculates score
+                score = (1000 + 500 * WIND + 500 * REST + 500 * POSITION) - (150 * targetsRemaining());
                 if (targetsRemaining() > 0) score /= targetsRemaining();
+                if (numShots > 5) score -= (numShots - 5) * 100;
 
                 //Shows score window with score info and stops the game
                 endGame();
