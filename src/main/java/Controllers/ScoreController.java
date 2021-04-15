@@ -30,6 +30,7 @@ public class ScoreController implements Initializable {
         TableColumn<Score, String> name = new TableColumn<>("Meno");
         TableColumn<Score, Integer> score = new TableColumn<>("Skóre");
         TableColumn<Score, Integer> tries = new TableColumn<>("P. pokusov");
+        TableColumn<Score, Integer> targetsHit = new TableColumn<>("Trefy");
         TableColumn<Score, Integer> position = new TableColumn<>("Poloha");
         TableColumn<Score, Integer> wind = new TableColumn<>("Sila vetra");
         TableColumn<Score, Integer> rested = new TableColumn<>("Unavenosť");
@@ -41,22 +42,24 @@ public class ScoreController implements Initializable {
             name.setCellValueFactory(new PropertyValueFactory<>(scores.get(0).nameProperty().getName()));
             score.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(scores.get(0).scoreProperty().getName())));
             tries.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(scores.get(0).triesProperty().getName())));
+            targetsHit.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(scores.get(0).targetsHitProperty().getName())));
             position.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(scores.get(0).positionProperty().getName())));
             wind.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(scores.get(0).windProperty().getName())));
             rested.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(scores.get(0).restedProperty().getName())));
         }
 
         //Sets table attributes
-        scoresTable.getColumns().setAll(name, score, tries, position, wind, rested);
+        scoresTable.getColumns().setAll(name, score, tries, targetsHit, position, wind, rested);
         scoresTable.columnResizePolicyProperty().setValue(param -> false);
         score.setSortType(TableColumn.SortType.DESCENDING);
         scoresTable.getSortOrder().add(score);
             //Column widths
-        name.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.25));
+        name.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.20));
         score.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.15));
         tries.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.15));
-        position.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.15));
-        wind.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.14));
+        targetsHit.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.1));
+        position.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.12));
+        wind.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.12));
         rested.prefWidthProperty().bind(scoresTable.widthProperty().multiply(0.15));
     }
 
@@ -83,7 +86,7 @@ public class ScoreController implements Initializable {
         scoreFile.createNewFile();
 
         PrintWriter write = new PrintWriter(new BufferedWriter(new FileWriter(scoreFile)));
-        write.write(String.format("%15s %10s %5s %3s %4s %4s\n", "NAME", "SCORE", "SHOTS", "POS", "WIND", "REST"));
+        write.write(String.format("%15s %10s %5s %3s %3s %4s %4s\n", "NAME", "SCORE", "SHOTS", "HIT", "POS", "WIND", "REST"));
         write.close();
 
         scores.clear();

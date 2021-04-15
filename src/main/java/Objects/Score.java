@@ -39,6 +39,18 @@ public class Score {
         return triesProperty().get();
     }
 
+    private IntegerProperty targetsHit;
+    public IntegerProperty targetsHitProperty() {
+        if (targetsHit == null) targetsHit = new SimpleIntegerProperty(this, "targetsHit");
+        return targetsHit;
+    }
+    public void setTargetsHit(int targetsHit) {
+        targetsHitProperty().setValue(targetsHit);
+    }
+    public int getTargetsHit() {
+        return targetsHitProperty().get();
+    }
+
     private IntegerProperty position;
     public IntegerProperty positionProperty() {
         if (position == null) position = new SimpleIntegerProperty(this, "position");
@@ -75,10 +87,11 @@ public class Score {
         return restedProperty().get();
     }
 
-    public Score(String name, int score, int tries, int position, int wind, int rested) {
+    public Score(String name, int score, int tries, int targetsHit, int position, int wind, int rested) {
         setName(name);
         setScore(score);
         setTries(tries);
+        setTargetsHit(targetsHit);
         setPosition(position);
         setWind(wind);
         setRested(rested);
@@ -86,11 +99,11 @@ public class Score {
 
     @Override
     public String toString() {
-        return String.format("%15s %10s %5s %3s %4s %4s\r\n", getName(), getScore(), getTries(), getPosition(), getWind(), getRested());
+        return String.format("%15s %10s %5s %3s %3s %4s %4s\r\n", getName(), getScore(), getTries(), getTargetsHit(), getPosition(), getWind(), getRested());
     }
 
     public static Score fromString(String line) {
-        return new Score(line.substring(0, 15).trim(), Integer.parseInt(line.substring(16, 26).trim()), Integer.parseInt(line.substring(27, 32).trim()),
-                Integer.parseInt(line.substring(33, 36).trim()), Integer.parseInt(line.substring(37, 41).trim()), Integer.parseInt(line.substring(42, 46).trim()));
+        return new Score(line.substring(0, 15).trim(), Integer.parseInt(line.substring(16, 26).trim()), Integer.parseInt(line.substring(27, 32).trim()), Integer.parseInt(line.substring(33, 36).trim()),
+                Integer.parseInt(line.substring(37, 40).trim()), Integer.parseInt(line.substring(41, 45).trim()), Integer.parseInt(line.substring(46, 50).trim()));
     }
 }

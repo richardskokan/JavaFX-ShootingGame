@@ -24,6 +24,7 @@ public class EndGameController extends Stage implements Initializable {
     private String name;
     private int score;
     private int tries;
+    private int targetsHit;
     private int position;
     private int wind;
     private int rested;
@@ -69,17 +70,18 @@ public class EndGameController extends Stage implements Initializable {
             PrintWriter write = new PrintWriter(new BufferedWriter(new FileWriter("results.txt", true)));
 
             //Writes player's score to file
-            Score scoreToWrite = new Score(name, score, tries, position, wind, rested);
+            Score scoreToWrite = new Score(name, score, tries, targetsHit, position, wind, rested);
             write.write(scoreToWrite.toString());
             write.close();
         } catch (IOException ignored) {}
     }
 
     //Sets data from MainController
-    public void setData(String name, int score, int tries, int position, int wind, int rested) {
+    public void setData(String name, int score, int tries, int targetsHit, int position, int wind, int rested) {
         this.name = name;
         this.score = score;
         this.tries = tries;
+        this.targetsHit = targetsHit;
         this.position = position;
         this.wind = wind;
         this.rested = rested;

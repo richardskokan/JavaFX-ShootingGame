@@ -240,8 +240,8 @@ public class MainController implements Initializable {
 
             //Checks if the game ended
             if (remainingShots == 0 || targetsRemaining() == 0) {
-                //Calculates score
-                score = (5000 + 2500 * WIND + 2500 * REST + 2500 * POSITION) / numShots;
+                //TODO Calculates score
+                score = (10000 + 2500 * WIND + 2500 * REST + 2500 * POSITION) / (remainingShots + 1) / numShots * 15;
                 if (targetsRemaining() > 0) score /= targetsRemaining();
 
                 //Shows score window with score info and stops the game
@@ -280,7 +280,7 @@ public class MainController implements Initializable {
         try {
             //Creates instance of EndGAmeController ("creates the end game window") and shows it
             EndGameController endGame = new EndGameController(gamePane.getScene().getWindow(), this::resetTargets);
-            endGame.setData(playerNameString, score, numShots, POSITION, WIND, REST);
+            endGame.setData(playerNameString, score, numShots, 5 - targetsRemaining(), POSITION, WIND, REST);
             endGame.show();
         } catch (IOException ignored) {}
     }
@@ -291,7 +291,7 @@ public class MainController implements Initializable {
             results.createNewFile();
 
             PrintWriter write = new PrintWriter(new BufferedWriter(new FileWriter(results)));
-            write.write(String.format("%15s %10s %5s %3s %4s %4s\n", "NAME", "SCORE", "SHOTS", "POS", "WIND", "REST"));
+            write.write(String.format("%15s %10s %5s %3s %3s %4s %4s\n", "NAME", "SCORE", "SHOTS", "HIT", "POS", "WIND", "REST"));
             write.close();
         }
     }
