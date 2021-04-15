@@ -318,8 +318,10 @@ public class MainController implements Initializable {
         gamePane.getChildren().removeAll(hitmarks);
 
         //Makes settings available
-        numTries.setDisable(false); playerName.setDisable(false); btnStart.setDisable(true); btnScore.setDisable(false); posStand.setDisable(false); posProne.setDisable(false);
+        numTries.setDisable(false); playerName.setDisable(false); btnScore.setDisable(false); posStand.setDisable(false); posProne.setDisable(false);
             windNone.setDisable(false); windLight.setDisable(false); windStrong.setDisable(false); rested.setDisable(false); heavyBreathing.setDisable(false);
+        playerName.setText("");
+        numTries.setText("");
         statusRest.setText("Unavenosť\n");
         bulletCounter.setText("Počet nábojov\n");
 

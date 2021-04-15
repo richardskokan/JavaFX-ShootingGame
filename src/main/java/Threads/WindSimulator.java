@@ -16,16 +16,20 @@ public class WindSimulator extends Thread {
     public synchronized void run() {
         super.run();
 
+        //Stops the thread if not needed (sim is off)
         if (windStrength == null || windStrength == 0) return;
 
         Random windGenerator = new Random();
+        //Generates initial wind strength
         windX = windGenerator.nextInt(WIND_LIMIT) + WIND_LIMIT * (windStrength - 1);
         if (windGenerator.nextBoolean()) windX *= -1;
 
         do {
+            //Generates how is the wind going to change (how much and direction)
             double windChange = windGenerator.nextDouble() * windGenerator.nextInt(5);
             boolean windDirection = windGenerator.nextBoolean();
 
+            //Changes the wind offset (applies wind changes)
             if (windDirection) {
                 if (windX + windChange <= WIND_LIMIT * windStrength) windX += windChange;
                 else windX = WIND_LIMIT * windStrength;
@@ -40,6 +44,7 @@ public class WindSimulator extends Thread {
         } while (true);
     }
 
+    //Returns wind strength value
     public double getWindX() {
         return windX;
     }
